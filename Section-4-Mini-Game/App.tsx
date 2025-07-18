@@ -1,5 +1,6 @@
+"use strict";
 import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
-import { useFonts } from "expo-font";
+import * as Font from "expo-font";
 import StartGameScreen from "./screens/StartGameScreen";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
@@ -23,17 +24,26 @@ const styles = StyleSheet.create({
 // the one copied over. If it was within the same file, it would have worked as the line
 // setCurrentGuess(newGuess) re-renders with the updated value of guessRounds.
 
-export default function App() {
-  // Load fonts first:
-  const [fontsLoaded] = useFonts({
-    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
-    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
-  }); // NOTE: Here this is opposite of the regular "pending/loading" state, which is true when
-  console.log("🚀 ~ App ~ fontsLoaded:", fontsLoaded);
+SplashScreen.preventAutoHideAsync();
+// NOTE: Keep it outside component to prevent from triggering everytime
 
+export default function App() {
+  // Hide the splash screen and load fonts first:
+  // NOTE: Here this is opposite of the regular "pending/loading" state, which is true when
   // something is loading. Instead, useFonts returns an array with the first element being whether
   // the fonts have been completely loaded, thus it's false when the fonts are loading.
+  // const [fontsLoaded, fontsError] = Font.useFonts({
+  //   "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+  //   "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+  // });
+  // console.log("🚀 ~ App ~ fontsLoaded:", fontsLoaded);
+  // console.log("🚀 ~ App ~ fontsError:", fontsError);
 
+  // ALSO NOTE: This way of loading fonts still throws an exception on some cases like path being
+  // incorrect, instead of returning the error value inside fontsError. Thus the other way of loading
+  // fonts, loadAsync can be used inside a useEffect().
+
+  const [appIsReady, setAppIsReady] = useState(false);
   const [userNumber, setUserNumber] = useState<number | null>(null);
   const [guessRounds, setGuessRounds] = useState<number[]>([]);
   const [gameIsOver, setGameIsOver] = useState(false);
@@ -44,22 +54,47 @@ export default function App() {
   const endGame = useCallback(() => setGameIsOver(true), [setGameIsOver]);
   const addRound = (currentGuess: number) =>
     setGuessRounds((current) => [currentGuess, ...current]);
-
-  if (!fontsLoaded) {
-    // return <AppLoading />;
-    // expo-app-loading has been deprecated, use expo-splash-screen instead.
-    return;
-  }
-
-  useEffect(() => {
-    if (fontsLoaded) SplashScreen.hideAsync();
-  }, [fontsLoaded]);
-
   const startNewGame = () => {
     setUserNumber(null);
     setGameIsOver(false);
     setGuessRounds([]);
   };
+
+  // if (!fontsLoaded) {
+  // return <AppLoading />;
+  // NOTE: expo-app-loading has been deprecated, use expo-splash-screen instead.
+  // return;
+  // }
+
+  // useEffect(() => {
+  //   // For use with useFonts in combination with SplashScreen methods
+  //   if (fontsLoaded || fontsError) {
+  //     // Hide splash screen whether fonts were loaded successfully or if there was error
+  //     SplashScreen.hideAsync();
+  //     setAppIsReady(true);
+  //   }
+  // }, [fontsLoaded, fontsError]);
+
+  useEffect(() => {
+    const prepareFonts = async () => {
+      // NOTE: This is better than useFonts, cuz this allows clear try-catch blocks
+      try {
+        await Font.loadAsync({
+          "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+          "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+        });
+      } catch (error) {
+        console.warn("🚀 ~ prepare ~ error:", error);
+      } finally {
+        // Whether fonts were loaded correctly or not, hide splash screen and set app ready to show content
+        SplashScreen.hideAsync();
+        setAppIsReady(true);
+      }
+    };
+    prepareFonts();
+  }, []);
+
+  if (!appIsReady) return null;
 
   return (
     <LinearGradient style={styles.screen} colors={[Colors.primary700, Colors.accent500]}>
