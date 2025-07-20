@@ -76,6 +76,8 @@ const StartGameScreen: React.FC<StartGameScreenProps> = ({ setUserNumber }) => {
   // Getting dynamic window sizing (responding to orientation):
   // const { width, height } = Dimensions.get("window");
   // But this doesn't listen and update for orientation changes. So use this hook instead:
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { width, height } = useWindowDimensions();
   // const dimensions = Dimensions.get("window");
   // console.log("🚀 ~ width | height:", width, height);

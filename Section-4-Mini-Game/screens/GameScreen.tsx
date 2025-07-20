@@ -87,7 +87,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ userNumber, endGame, guessRound
       addRound(currentGuess);
       endGame();
     }
-  }, [currentGuess, userNumber, endGame]);
+  }, [currentGuess, userNumber, endGame, addRound]);
 
   // For default (portrait) orientation
   let content = (
@@ -125,7 +125,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ userNumber, endGame, guessRound
   }
   return (
     <View style={[styles.screen, orientation === "portrait" && { marginTop: 20 }]}>
-      <Title>Opponent's Guess</Title>
+      <Title>Opponent&apos;s Guess</Title>
       {content}
       {/* <ScrollView>
         {guessRounds.map((guess) => (
