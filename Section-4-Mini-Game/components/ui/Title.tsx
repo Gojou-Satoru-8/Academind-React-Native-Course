@@ -1,4 +1,4 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Platform } from "react-native";
 
 const styles = StyleSheet.create({
   title: {
@@ -9,10 +9,19 @@ const styles = StyleSheet.create({
     // fontWeight: "bold",
     color: "white",
     textAlign: "center",
-    borderWidth: 2,
+    // borderWidth: 2,
+    // Conditionally setting borderWidth based on platform:
+    // borderWidth: Platform.OS === "android" ? 2 : 0, // Method 1
+    // Method 2: Platform.Select() returns whatever you pass to it
+    // borderWidth: Platform.select({ ios: 0, android: 2 }), // Here, ios: 2 property can be omitted
+    // OR (as Platform.select returns whatever you pass to it):
+    ...Platform.select({ android: { borderWidth: 2 } }),
     borderRadius: 8,
     borderColor: "white",
     padding: 12,
+    maxWidth: "80%",
+    width: 300, // Takes width 300px as long as maxWidth condition is satisfied.
+    // marginHorizontal: "auto",
   },
 });
 

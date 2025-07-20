@@ -1,16 +1,31 @@
-import { TextInput, View, StyleSheet, Alert } from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+  // Dimensions,
+  useWindowDimensions,
+} from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
 import { Colors } from "../constants/colors";
 import Title from "../components/ui/Title";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
+// import { StatusBar } from "expo-status-bar";
+
+// const deviceHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
+  screen: { flex: 1 },
   rootContainer: {
     flex: 1,
-    marginTop: 100,
     alignItems: "center",
+    // marginVertical: deviceHeight < 400 ? 30 : 100, // This value is calculated once at launch, and
+    // doesn't change dynamically, causing issues when changing orientation, as marginVertical is
+    // locked / hard-coded. So dynamic values must be used instead (see component code below)
   },
   instructionText: {
     color: "white",
@@ -58,6 +73,16 @@ interface StartGameScreenProps {
 const StartGameScreen: React.FC<StartGameScreenProps> = ({ setUserNumber }) => {
   const [userInput, setUserInput] = useState("");
 
+  // Getting dynamic window sizing (responding to orientation):
+  // const { width, height } = Dimensions.get("window");
+  // But this doesn't listen and update for orientation changes. So use this hook instead:
+  const { width, height } = useWindowDimensions();
+  // const dimensions = Dimensions.get("window");
+  // console.log("🚀 ~ width | height:", width, height);
+  // console.log("🚀 ~ dimensions:", dimensions.width, dimensions.height);
+
+  const marginTop = height < 450 ? 30 : 100;
+
   const resetUserInput = () => setUserInput("");
   const confirmNumberInput = () => {
     const numberInput = Number.parseInt(userInput);
@@ -71,34 +96,43 @@ const StartGameScreen: React.FC<StartGameScreenProps> = ({ setUserNumber }) => {
     }
     setUserNumber(numberInput);
   };
+
   return (
-    <View style={styles.rootContainer}>
-      <Title>Guess My Number</Title>
-      <Card>
-        <InstructionText>Enter a number</InstructionText>
-        <TextInput
-          value={userInput}
-          onChangeText={(newText) => setUserInput(newText)}
-          keyboardType="number-pad"
-          autoCapitalize="none"
-          autoCorrect={false}
-          style={styles.numberInput}
-          maxLength={2}
-        />
-        <View style={styles.buttonContainer}>
-          <PrimaryButton style={{ flex: 1 }} onPress={resetUserInput}>
-            Reset
-          </PrimaryButton>
-          <PrimaryButton
-            style={{ flex: 1 }}
-            // disabled={!userInput}
-            onPress={confirmNumberInput}
-          >
-            Confirm
-          </PrimaryButton>
+    <ScrollView style={styles.screen}>
+      {/* NOTE: ios keyboards can't be hidden on tap inside a View, as View is untappable, possible alternatives are ScrollView, FlatList and TouchableWithoutFeedback */}
+      <KeyboardAvoidingView style={styles.screen} behavior="position">
+        <View style={[styles.rootContainer, { marginTop }]}>
+          <Title>Guess My Number</Title>
+          <Card>
+            <InstructionText>Enter a number</InstructionText>
+            <TextInput
+              value={userInput}
+              onChangeText={(newText) => setUserInput(newText)}
+              keyboardType="number-pad"
+              autoCapitalize="none"
+              autoCorrect={false}
+              style={styles.numberInput}
+              maxLength={2}
+            />
+            {/* <StatusBar style="inverted" /> 
+            StatusBar can be placed anywhere
+            */}
+            <View style={styles.buttonContainer}>
+              <PrimaryButton style={{ flex: 1 }} onPress={resetUserInput}>
+                Reset
+              </PrimaryButton>
+              <PrimaryButton
+                style={{ flex: 1 }}
+                // disabled={!userInput}
+                onPress={confirmNumberInput}
+              >
+                Confirm
+              </PrimaryButton>
+            </View>
+          </Card>
         </View>
-      </Card>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 };
 

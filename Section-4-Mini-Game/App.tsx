@@ -1,14 +1,15 @@
 "use strict";
-import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
-import * as Font from "expo-font";
-import StartGameScreen from "./screens/StartGameScreen";
-import { LinearGradient } from "expo-linear-gradient";
 import { useCallback, useEffect, useState } from "react";
+import { StyleSheet, ImageBackground, SafeAreaView } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { LinearGradient } from "expo-linear-gradient";
+import StartGameScreen from "./screens/StartGameScreen";
 import GameScreen from "./screens/GameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 import { Colors } from "./constants/colors";
 // import AppLoading from "expo-app-loading";
-import * as SplashScreen from "expo-splash-screen";
 
 const styles = StyleSheet.create({
   screen: {
@@ -123,6 +124,7 @@ export default function App() {
           )}
         </SafeAreaView>
       </ImageBackground>
+      <StatusBar style="light" />
     </LinearGradient>
   );
 }

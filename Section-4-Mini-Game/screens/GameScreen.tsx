@@ -1,4 +1,12 @@
-import { View, StyleSheet, Alert, Text, ScrollView, FlatList } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Alert,
+  // Text,
+  // ScrollView,
+  FlatList,
+  useWindowDimensions,
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Title from "../components/ui/Title";
@@ -47,6 +55,10 @@ const GameScreen: React.FC<GameScreenProps> = ({ userNumber, endGame, guessRound
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   // State is initialized with a random guess
   console.log(minBoundary, currentGuess, maxBoundary);
+  const { width, height } = useWindowDimensions();
+  const orientation = width > height ? "landscape" : "portrait";
+  console.log("🚀 ~ orientation:", orientation);
+
   const generateNextGuess = (direction: "higher" | "lower") => {
     if (
       (userNumber > currentGuess && direction === "lower") ||
@@ -77,13 +89,13 @@ const GameScreen: React.FC<GameScreenProps> = ({ userNumber, endGame, guessRound
     }
   }, [currentGuess, userNumber, endGame]);
 
-  return (
-    <View style={styles.screen}>
-      <Title>Opponent's Guess</Title>
+  // For default (portrait) orientation
+  let content = (
+    <>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
-        <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainerPortrait}>
           <PrimaryButton onPress={generateNextGuess.bind(null, "lower")} style={{ flex: 1 }}>
             <Ionicons name="remove" size={24} color="white" />
           </PrimaryButton>
@@ -92,6 +104,29 @@ const GameScreen: React.FC<GameScreenProps> = ({ userNumber, endGame, guessRound
           </PrimaryButton>
         </View>
       </Card>
+    </>
+  );
+
+  if (orientation === "landscape") {
+    content = (
+      <>
+        {/* <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText> */}
+        <View style={styles.buttonsContainerLandscape}>
+          <PrimaryButton onPress={generateNextGuess.bind(null, "lower")} style={{ flex: 1 }}>
+            <Ionicons name="remove" size={24} color="white" />
+          </PrimaryButton>
+          <NumberContainer>{currentGuess}</NumberContainer>
+          <PrimaryButton onPress={generateNextGuess.bind(null, "higher")} style={{ flex: 1 }}>
+            <Ionicons name="add" size={24} color="white" />
+          </PrimaryButton>
+        </View>
+      </>
+    );
+  }
+  return (
+    <View style={[styles.screen, orientation === "portrait" && { marginTop: 20 }]}>
+      <Title>Opponent's Guess</Title>
+      {content}
       {/* <ScrollView>
         {guessRounds.map((guess) => (
           <Text key={guess}>{guess}</Text>
@@ -116,11 +151,16 @@ const GameScreen: React.FC<GameScreenProps> = ({ userNumber, endGame, guessRound
 };
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, padding: 24 },
-  buttonContainer: {
+  screen: { flex: 1, padding: 24, alignItems: "center" },
+  buttonContainerPortrait: {
     // marginTop: 24,
     paddingHorizontal: 30,
     flexDirection: "row",
+  },
+  buttonsContainerLandscape: {
+    maxWidth: 400,
+    flexDirection: "row",
+    alignItems: "center",
   },
   instructionText: { marginBottom: 12 },
   listContainer: { flex: 1, padding: 16 },

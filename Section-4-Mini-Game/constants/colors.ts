@@ -1,21 +1,15 @@
-export const Colors = {
-  // Primary
-  primary500: "#72063c",
-  primary500Faded: "#72063cbc",
-  primary600: "#640233",
-  primary700: "#4e0329",
-  primary800: "#3b021f",
+// NOTE: This file is only for Typescript, it's presence is only to mute TS Errors which isn't an
+// error.
+// Explanation:
+// In order to facilitate platform-specific colors, two files: colors.ios.ts and colors.android.ts
+// are made, based on the same name, followed by the extension .android.ts and ios.ts.
+// The import statement should specify the file name without .ios or .android, and React Native will
+// intelligently import based on the platform.
+// Thus, no need to specify separate imports from colors.android.ts or colors.ios.ts, just use:
+// import {Colors, Shadows} from "../constants/colors"
+// While expo will pick this up (and it is the recommended way), TS linter will show red lines (with
+// the error being it can't find such a file). Hence this file colors.ts exists, with the necessary
+// exports. Functionally, it's irrelevant.
 
-  // Accent
-  accent500: "#ddb52f",
-};
-
-export const Shadows = {
-  // NOTE: Adding shadows (platform specific):
-  elevation: 8, // Android only
-  // Following are iOS only:
-  shadowColor: "black",
-  shadowOffset: { width: 0, height: 6 },
-  shadowRadius: 6,
-  shadowOpacity: 0.25,
-};
+import { Colors, Shadows } from "./colors.ios";
+export { Colors, Shadows };
