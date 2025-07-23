@@ -1,17 +1,24 @@
-import { FlatList, ScrollView, StyleSheet } from "react-native";
+import { FlatList, ListRenderItemInfo, ScrollView, StyleSheet } from "react-native";
 import { CATEGORIES } from "../data/dummy-data";
 import { useCallback } from "react";
-import { itemDataType, RootStackParamList } from "../types";
-import CategoryGridTile from "../components/ui/CategoryGridTile";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { DrawerParamList, RootStackParamList } from "../types";
+import CategoryGridTile from "../components/CategoryGridTile";
+import {
+  NativeStackScreenProps,
+  // NativeStackNavigationProp,
+} from "@react-navigation/native-stack";
+import Category from "../models/category";
+import { DrawerScreenProps } from "@react-navigation/drawer";
+// import { useNavigation } from "@react-navigation/native";
 // import { NavigationProp, useNavigation } from "@react-navigation/native";
 
-type CategoriesScreenProps = NativeStackScreenProps<RootStackParamList, "MealsCategories">;
+type CategoriesScreenProps = DrawerScreenProps<DrawerParamList, "MealsCategories">;
 
 const CategoriesScreen = ({ navigation }: CategoriesScreenProps) => {
   // Alternative to navigation prop being injected (automatically) into component, useNavigation():
-  //   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const renderCategoryItem = useCallback((itemData: itemDataType) => {
+  // const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
+  const renderCategoryItem = useCallback((itemData: ListRenderItemInfo<Category>) => {
     return (
       <CategoryGridTile
         category={itemData.item}

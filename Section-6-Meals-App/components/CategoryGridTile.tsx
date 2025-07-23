@@ -1,5 +1,5 @@
 import { Text, Pressable, View, StyleSheet, Platform, GestureResponderEvent } from "react-native";
-import Category from "../../models/category";
+import Category from "../models/category";
 
 const styles = StyleSheet.create({
   gridItem: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     // NOTE: Shadow won't be visible until background color is added:
     backgroundColor: "white",
-    ...Platform.select({ android: { overflow: "hidden" } }),
+    // ...Platform.select({ android: { overflow: "hidden" } }),
     // NOTE: overflow: "hidden" on ios hides the shadows as they are in the overflow region
   },
   button: { flex: 1 },
@@ -37,6 +37,7 @@ interface CategoryGridTitleProps {
   category: Category;
   onPress: (event: GestureResponderEvent) => void;
 }
+
 const CategoryGridTile = ({ category, onPress }: CategoryGridTitleProps) => {
   return (
     <View style={[styles.gridItem]}>
