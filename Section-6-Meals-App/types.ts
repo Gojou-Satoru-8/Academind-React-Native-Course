@@ -1,7 +1,7 @@
 // List all your screens at the Root level, with all params expected by each
 export type RootStackParamList = {
   // MealsCategories: undefined;
-  Drawer: undefined;
+  MainScreenDrawer: undefined;
   MealsOverview: { categoryId: string };
   MealDetails: { mealId: string };
 };

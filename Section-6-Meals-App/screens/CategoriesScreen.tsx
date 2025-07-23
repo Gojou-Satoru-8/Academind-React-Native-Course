@@ -5,19 +5,46 @@ import { DrawerParamList, RootStackParamList } from "../types";
 import CategoryGridTile from "../components/CategoryGridTile";
 import {
   NativeStackScreenProps,
-  // NativeStackNavigationProp,
+  // NativeStackNavigationProp
 } from "@react-navigation/native-stack";
-import Category from "../models/category";
-import { DrawerScreenProps } from "@react-navigation/drawer";
+import {
+  DrawerScreenProps,
+  // DrawerNavigationProp
+} from "@react-navigation/drawer";
+import {
+  CompositeScreenProps,
+  //  CompositeNavigationProp
+} from "@react-navigation/native";
 // import { useNavigation } from "@react-navigation/native";
-// import { NavigationProp, useNavigation } from "@react-navigation/native";
+import Category from "../models/category";
 
-type CategoriesScreenProps = DrawerScreenProps<DrawerParamList, "MealsCategories">;
+const styles = StyleSheet.create({
+  screen: { marginVertical: 24 },
+});
+
+// NOTE: This screen is part of the Drawer Navigation, which is itself part of the Stack Navigation.
+// Thus, the type will be CompositeScreenProps<A, B>, where A is the immediate Navigator (Drawer i.e.
+// DrawerScreenProps), and B is the overall navigator (Stack i.e. StackScreenProps). Here, swapping
+// the order of navigators works, but isn't technically right.
+type CategoriesScreenProps = CompositeScreenProps<
+  DrawerScreenProps<DrawerParamList, "MealsCategories">,
+  NativeStackScreenProps<RootStackParamList, "MainScreenDrawer">
+>;
 
 const CategoriesScreen = ({ navigation }: CategoriesScreenProps) => {
   // Alternative to navigation prop being injected (automatically) into component, useNavigation():
-  // const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-
+  // NOTE: Similar to above CompositeScreenProps, here we use CompositeNavgationProp:
+  // const navigation =
+  //   useNavigation<
+  //     CompositeNavigationProp<
+  //       DrawerNavigationProp<DrawerParamList>,
+  //       NativeStackNavigationProp<RootStackParamList>
+  //     >
+  //   >();
+  // navigation.navigate("Favourites"); // Now navigate() has all routes available.
+  // NOTE: There is no CompositeRouteProp, unlike CompositeScreenProps and CompositeNavigationProp,
+  // this is becuase route prop just gives you the current route, and has no use of the routes from
+  // other navigators.
   const renderCategoryItem = useCallback((itemData: ListRenderItemInfo<Category>) => {
     return (
       <CategoryGridTile
@@ -33,6 +60,7 @@ const CategoriesScreen = ({ navigation }: CategoriesScreenProps) => {
       renderItem={renderCategoryItem}
       keyExtractor={(item) => item.id}
       numColumns={2}
+      style={styles.screen}
     />
     // <ScrollView>
     //   {CATEGORIES.map((category: Category) => (

@@ -83,7 +83,7 @@ export default function App() {
             // name="MealsCategories"
             // component={CategoriesScreen}
             // NOTE: component prop accepts other navigators for nested navigation:
-            name="Drawer"
+            name="MainScreenDrawer"
             component={DrawerNavigator}
             // NOTE: Following options are for per-screen customization (overrides screenOptions):
             options={{
