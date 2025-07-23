@@ -10,7 +10,9 @@ import MealDetailsScreen from "./screens/MealDetailsScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FavouritesScreen from "./screens/FavouritesScreen";
 import { Ionicons } from "@expo/vector-icons";
-import FavouritesContextProvider from "./store/context";
+// import FavouritesContextProvider from "./store/context";
+import { Provider } from "react-redux";
+import store from "./store/redux";
 // import { CATEGORIES } from "./data/dummy-data";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -68,7 +70,8 @@ export default function App() {
     // NOTE: SafeAreaView not needed when using React Navigation
     <>
       <StatusBar style="light" />
-      <FavouritesContextProvider>
+      <Provider store={store}>
+        {/* <FavouritesContextProvider> */}
         <NavigationContainer>
           <Stack.Navigator
             // By default the first screen in the Stack is the default screen, but can be changed via:
@@ -114,7 +117,8 @@ export default function App() {
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </FavouritesContextProvider>
+        {/* </FavouritesContextProvider> */}
+      </Provider>
     </>
   );
 }

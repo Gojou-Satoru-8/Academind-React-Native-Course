@@ -7,6 +7,19 @@ export const FavouritesContext = createContext<FavouritesContextType>({
   removeFavourite: () => {},
 });
 
+// NOTE: Typing the context values can also be done within the object itself (by asserting with "as")
+// export const FavouritesContext = createContext({
+//   ids: [] as string[],
+//   addFavourite: (() => {}) as (id: string) => void,
+//   removeFavourite: (() => {}) as (id: string) => void,
+// });
+// OR by asserting the whole object:
+// export const FavouritesContext = createContext({
+//   ids: [],
+//   addFavourite: () => {},
+//   removeFavourite: () => {},
+// } as FavouritesContextType);
+
 interface FavouritesContextProviderProps {
   children: React.ReactNode;
 }
