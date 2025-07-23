@@ -1,3 +1,4 @@
+// SECTION: REACT-NAVIGATION TYPES:
 // List all your screens at the Root level, with all params expected by each
 export type RootStackParamList = {
   // MealsCategories: undefined;
@@ -15,3 +16,10 @@ export type DrawerParamList = {
 //   MealsCategories = "MealsCategories",
 //   MealsOverview = "MealsOverview",
 // }
+
+// SECTION: CONTEXT TYPES:
+export interface FavouritesContextType {
+  ids: string[];
+  addFavourite(id: string): void;
+  removeFavourite(id: string): void;
+}

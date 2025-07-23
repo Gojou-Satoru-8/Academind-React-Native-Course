@@ -6,11 +6,11 @@ import {
   StyleSheet,
   // Platform
 } from "react-native";
-import Meal from "../models/meal";
+import Meal from "../../models/meal";
 import { useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "../../types";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import MealMiniDetails from "./MealMiniDetails";
+import MealMiniDetails from "../MealDetails/MealMiniDetails";
 
 const styles = StyleSheet.create({
   mealItem: {

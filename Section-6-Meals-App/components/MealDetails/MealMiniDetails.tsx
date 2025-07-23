@@ -1,6 +1,6 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { View, Text, StyleSheet } from "react-native";
-import { RootStackParamList } from "../types";
+import { RootStackParamList } from "../../types";
 
 const styles = StyleSheet.create({
   details: {

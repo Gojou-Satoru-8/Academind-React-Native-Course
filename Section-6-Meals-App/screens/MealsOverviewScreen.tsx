@@ -1,20 +1,14 @@
-import { View, Text, StyleSheet, FlatList, ListRenderItemInfo } from "react-native";
 import { CATEGORIES, MEALS } from "../data/dummy-data";
 import { RootStackParamList } from "../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import Meal from "../models/meal";
-import MealItem from "../components/MealItem";
-import { useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
+import MealsList from "../components/MealsList/MealsList";
 // import { RouteProp, useRoute } from "@react-navigation/native";
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16 },
-});
 
 type MealsOverviewScreenProps = NativeStackScreenProps<RootStackParamList, "MealsOverview">;
 
-const MealsOverviewScreen = ({ route, navigation }: MealsOverviewScreenProps) => {
-  console.log("🚀 ~ route:", route);
+const MealsOverviewScreen: React.FC<MealsOverviewScreenProps> = ({ route, navigation }) => {
+  // console.log("🚀 ~ route:", route);
   // NOTE: Alternative to route prop being injected (automatically) into component, useRoute():
   //   const route = useRoute<RouteProp<RootStackParamList>>();
 
@@ -30,19 +24,7 @@ const MealsOverviewScreen = ({ route, navigation }: MealsOverviewScreenProps) =>
     navigation.setOptions({ title: category?.title });
   }, [category, navigation]);
 
-  const renderMealItem = (itemData: ListRenderItemInfo<Meal>) => {
-    return <MealItem meal={itemData.item} />;
-  };
-
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={mealsForCategory}
-        renderItem={renderMealItem}
-        keyExtractor={(item) => item.id}
-      />
-    </View>
-  );
+  return <MealsList items={mealsForCategory} />;
 };
 
 export default MealsOverviewScreen;

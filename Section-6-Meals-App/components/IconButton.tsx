@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
 
 interface IconButtonProps {
   onPress: (event: GestureResponderEvent) => void;
-  icon?: keyof typeof Ionicons.glyphMap;
+  icon: keyof typeof Ionicons.glyphMap;
   color?: string;
 }
 const IconButton: React.FC<IconButtonProps> = ({ onPress, icon, color }) => {
   return (
     <Pressable onPress={onPress} style={({ pressed }) => pressed && styles.pressed}>
-      <Ionicons name={icon ? icon : "star"} size={24} color={color ? color : "white"} />
+      <Ionicons name={icon} size={24} color={color ? color : "white"} />
     </Pressable>
   );
 };

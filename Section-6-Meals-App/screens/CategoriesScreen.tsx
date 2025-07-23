@@ -1,4 +1,4 @@
-import { FlatList, ListRenderItemInfo, ScrollView, StyleSheet } from "react-native";
+import { FlatList, ListRenderItemInfo, StyleSheet } from "react-native";
 import { CATEGORIES } from "../data/dummy-data";
 import { useCallback } from "react";
 import { DrawerParamList, RootStackParamList } from "../types";
@@ -31,7 +31,7 @@ type CategoriesScreenProps = CompositeScreenProps<
   NativeStackScreenProps<RootStackParamList, "MainScreenDrawer">
 >;
 
-const CategoriesScreen = ({ navigation }: CategoriesScreenProps) => {
+const CategoriesScreen: React.FC<CategoriesScreenProps> = ({ navigation }) => {
   // Alternative to navigation prop being injected (automatically) into component, useNavigation():
   // NOTE: Similar to above CompositeScreenProps, here we use CompositeNavgationProp:
   // const navigation =
@@ -45,14 +45,17 @@ const CategoriesScreen = ({ navigation }: CategoriesScreenProps) => {
   // NOTE: There is no CompositeRouteProp, unlike CompositeScreenProps and CompositeNavigationProp,
   // this is becuase route prop just gives you the current route, and has no use of the routes from
   // other navigators.
-  const renderCategoryItem = useCallback((itemData: ListRenderItemInfo<Category>) => {
-    return (
-      <CategoryGridTile
-        category={itemData.item}
-        onPress={() => navigation.navigate("MealsOverview", { categoryId: itemData.item.id })}
-      />
-    );
-  }, []);
+  const renderCategoryItem = useCallback(
+    (itemData: ListRenderItemInfo<Category>) => {
+      return (
+        <CategoryGridTile
+          category={itemData.item}
+          onPress={() => navigation.navigate("MealsOverview", { categoryId: itemData.item.id })}
+        />
+      );
+    },
+    [navigation]
+  );
 
   return (
     <FlatList

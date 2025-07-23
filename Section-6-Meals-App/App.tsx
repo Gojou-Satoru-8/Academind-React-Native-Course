@@ -10,6 +10,7 @@ import MealDetailsScreen from "./screens/MealDetailsScreen";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import FavouritesScreen from "./screens/FavouritesScreen";
 import { Ionicons } from "@expo/vector-icons";
+import FavouritesContextProvider from "./store/context";
 // import { CATEGORIES } from "./data/dummy-data";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -67,51 +68,53 @@ export default function App() {
     // NOTE: SafeAreaView not needed when using React Navigation
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          // By default the first screen in the Stack is the default screen, but can be changed via:
-          // initialRouteName="MealsCategories"
-          // NOTE: Following options apply to all screens, but can be overridden by specifying options inside each Stack.Screen:
-          screenOptions={{
-            title: "Meals App", // applies if no title is explicitly set in Stack.Screen
-            headerStyle: { backgroundColor: "#8B2EFF" },
-            headerTintColor: "white", // Applies to header text and back button
-            contentStyle: styles.screen,
-          }}
-        >
-          <Stack.Screen
-            // name="MealsCategories"
-            // component={CategoriesScreen}
-            // NOTE: component prop accepts other navigators for nested navigation:
-            name="MainScreenDrawer"
-            component={DrawerNavigator}
-            // NOTE: Following options are for per-screen customization (overrides screenOptions):
-            options={{
-              // title: "All Categories",
-              // headerStyle: { backgroundColor: "#8B2EFF" },
-              // headerTintColor: "white",
-              // contentStyle: styles.screen,
-              headerShown: false,
+      <FavouritesContextProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            // By default the first screen in the Stack is the default screen, but can be changed via:
+            // initialRouteName="MealsCategories"
+            // NOTE: Following options apply to all screens, but can be overridden by specifying options inside each Stack.Screen:
+            screenOptions={{
+              title: "Meals App", // applies if no title is explicitly set in Stack.Screen
+              headerStyle: { backgroundColor: "#8B2EFF" },
+              headerTintColor: "white", // Applies to header text and back button
+              contentStyle: styles.screen,
             }}
-          />
-          <Stack.Screen
-            name="MealsOverview"
-            component={MealsOverviewScreen}
-            // NOTE: Dynamically setting screen's title (can be otherwise set and overriden by navigation.setOption inside the screen component ie MealsOverviewScreen)
-            // options={({ route }) => {
-            //   // this function gets passed route and navigation as props, just like other screen components
-            //   const { categoryId } = route.params;
-            //   const category = CATEGORIES.find((category) => (category.id = categoryId));
-            //   return { title: category?.title, contentStyle: { backgroundColor: "blue" } };
-            // }}
-          />
-          <Stack.Screen
-            name="MealDetails"
-            component={MealDetailsScreen}
-            // options={{ headerRight: ({}) => <Text>Super</Text> }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              // name="MealsCategories"
+              // component={CategoriesScreen}
+              // NOTE: component prop accepts other navigators for nested navigation:
+              name="MainScreenDrawer"
+              component={DrawerNavigator}
+              // NOTE: Following options are for per-screen customization (overrides screenOptions):
+              options={{
+                // title: "All Categories",
+                // headerStyle: { backgroundColor: "#8B2EFF" },
+                // headerTintColor: "white",
+                // contentStyle: styles.screen,
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+              // NOTE: Dynamically setting screen's title (can be otherwise set and overriden by navigation.setOption inside the screen component ie MealsOverviewScreen)
+              // options={({ route }) => {
+              //   // this function gets passed route and navigation as props, just like other screen components
+              //   const { categoryId } = route.params;
+              //   const category = CATEGORIES.find((category) => (category.id = categoryId));
+              //   return { title: category?.title, contentStyle: { backgroundColor: "blue" } };
+              // }}
+            />
+            <Stack.Screen
+              name="MealDetails"
+              component={MealDetailsScreen}
+              // options={{ headerRight: ({}) => <Text>Super</Text> }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FavouritesContextProvider>
     </>
   );
 }
