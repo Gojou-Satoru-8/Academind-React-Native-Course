@@ -1,5 +1,6 @@
 // SECTION: REACT-NAVIGATION TYPES:
 // List all your screens at the Root level, with all params expected by each
+// NOTE: These can't be declared as interfaces, must be type:
 export type RootStackParamList = {
   // MealsCategories: undefined;
   MainScreenDrawer: undefined;
