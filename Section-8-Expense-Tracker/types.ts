@@ -17,9 +17,24 @@ export type CompositeNavigationType = CompositeNavigationProp<
   NativeStackNavigationProp<RootStackParamList>
 >;
 
+// NOTE: Following are two ways to define Expense (with id), and EditableExpenseFields (without id)
+// 1) Define EditableExpenseFields (w/o id), then define expense with interface "extends" or type &
+// export type EditableExpenseFields = {
+//   description: string;
+//   amount: number;
+//   date: Date;
+// };
+
+// export type Expense = { id: string } & EditableExpenseFields;
+// OR: export interface Expense extends EditableExpenseFields {
+//   id: string;
+// }
+// 2) Define Expense (with all fields), and use Omit<T> to define EditableExpenseFields:
 export type Expense = {
   id: string;
   description: string;
   amount: number;
   date: Date;
 };
+
+export type EditableExpenseFields = Omit<Expense, "id">;

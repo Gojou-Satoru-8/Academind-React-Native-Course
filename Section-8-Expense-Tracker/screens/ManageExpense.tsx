@@ -1,10 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { RootStackParamList } from "../types";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import IconButton from "../components/ui/IconButton";
 import { GlobalStyles } from "../constants/styles";
 import Button from "../components/ui/Button";
+import { ExpensesContext } from "../store/context";
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 24, backgroundColor: GlobalStyles.colors.primary800 },
@@ -30,12 +31,34 @@ const ManageExpense: React.FC<ManageExpenseScreenProps> = ({ route, navigation }
   // const isEditing = !!expenseId; // Or Boolean(expenseId)
 
   useLayoutEffect(() => {
-    navigation.setOptions({ title: isNewExpense ? "Add Expense" : "Edit Expense" });
+    navigation.setOptions({
+      title: isNewExpense ? "Add Expense" : "Edit Expense",
+      // presentation: "modal", // This doesn't have an effect here, cuz this runs after the
+      // ManageExpense screen is navigated to.
+    });
   }, [isNewExpense, navigation]);
 
-  const deleteExpense = () => {};
-  const cancelAddOrEditExpense = () => {};
-  const addOrEditExpense = () => {};
+  const expensesContext = useContext(ExpensesContext);
+
+  const deleteExpense = () => {
+    if (isNewExpense) return;
+    expensesContext.removeExpense(expenseId);
+    navigation.goBack();
+  };
+
+  const cancelAddOrEditExpense = () => {
+    navigation.goBack();
+  };
+
+  const addOrEditExpense = () => {
+    if (isNewExpense) {
+      expensesContext.addExpense({ amount: 83.99, description: "New Expense", date: new Date() });
+    } else {
+      // NOTE: here TS knows that expenseId is a string, not string | undefined
+      expensesContext.updateExpense(expenseId, { amount: 49.99, description: "Updated Expense" });
+    }
+    navigation.goBack();
+  };
 
   return (
     <View style={styles.container}>
