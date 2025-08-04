@@ -2,7 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Expense, MainScreensTabParamList } from "../../types";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
-import { GlobalStyles } from "../../constants/styles";
+// import { GlobalStyles } from "../../constants/styles";
 import { RouteProp, useRoute } from "@react-navigation/native";
 
 const styles = StyleSheet.create({
@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 24,
     paddingHorizontal: 24,
-    backgroundColor: GlobalStyles.colors.primary700,
+    // backgroundColor: GlobalStyles.colors.primary700,
   },
   infoText: {
     color: "white",
@@ -32,7 +32,7 @@ const ExpensesOutput: React.FC<ExpensesOutputProps> = ({
   fallbackText,
 }) => {
   const route = useRoute<RouteProp<MainScreensTabParamList>>();
-  console.log("🚀 ~ ExpensesOutput ~ route:", route);
+  // console.log("🚀 ~ ExpensesOutput ~ route:", route);
 
   const finalFallbackText = fallbackText
     ? fallbackText

@@ -1,4 +1,5 @@
 export const getFormattedDateTime = (date: Date) => {
+  if (date.toString() === "Invalid Date") return "";
   const formattedDateTime = Intl.DateTimeFormat("en-US", {
     // dateStyle: "medium",
     // timeStyle: "short",

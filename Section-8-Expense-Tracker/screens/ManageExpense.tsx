@@ -1,18 +1,19 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, StyleSheet } from "react-native";
-import { RootStackParamList } from "../types";
-import { useContext, useLayoutEffect } from "react";
+import { EditableExpenseFields, RootStackParamList } from "../types";
+import { useContext, useLayoutEffect, useState } from "react";
 import IconButton from "../components/ui/IconButton";
 import { GlobalStyles } from "../constants/styles";
-import Button from "../components/ui/Button";
+
 import { ExpensesContext } from "../store/context";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
+import { deleteExpense, storeExpense, updateExpense } from "../util/http";
+import LoadingOverlay from "../components/ui/LoadingOverlay";
+import { AxiosError } from "axios";
+import ErrorOverlay from "../components/ui/ErrorOverlay";
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: GlobalStyles.colors.primary800 },
-
-  buttons: { flexDirection: "row", justifyContent: "center", alignItems: "center" },
-
-  button: { minWidth: 120, marginHorizontal: 8 },
+  container: { flex: 1, padding: 24 },
 
   deleteContainer: {
     marginTop: 16,
@@ -38,45 +39,84 @@ const ManageExpense: React.FC<ManageExpenseScreenProps> = ({ route, navigation }
     });
   }, [isNewExpense, navigation]);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const expensesContext = useContext(ExpensesContext);
+  const existingExpense = expensesContext.expenses.find((expense) => expense.id === expenseId);
 
-  const deleteExpense = () => {
+  const deleteExpenseHandler = async () => {
     if (isNewExpense) return;
-    expensesContext.removeExpense(expenseId);
-    navigation.goBack();
+    try {
+      setIsLoading(true);
+      await deleteExpense(expenseId);
+      expensesContext.removeExpense(expenseId);
+      // setIsLoading(false); // Not need as we are closing the screen next line.
+      navigation.goBack();
+    } catch (error) {
+      console.log("🚀 ~ deleteExpenseHandler ~ error:", JSON.stringify(error, null, 2));
+      const err = error as AxiosError;
+      setErrorMessage(
+        `${err.message === "Network Error" ? `${err.message}! ` : ""}Could not delete expense`
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const cancelAddOrEditExpense = () => {
     navigation.goBack();
   };
 
-  const addOrEditExpense = () => {
-    if (isNewExpense) {
-      expensesContext.addExpense({ amount: 83.99, description: "New Expense", date: new Date() });
-    } else {
-      // NOTE: here TS knows that expenseId is a string, not string | undefined
-      expensesContext.updateExpense(expenseId, { amount: 49.99, description: "Updated Expense" });
+  const saveExpense = async (expenseData: EditableExpenseFields) => {
+    // Add expense to local store (Context), and then to DB via API
+    setIsLoading(true);
+    try {
+      if (isNewExpense) {
+        const id = await storeExpense(expenseData);
+        expensesContext.addExpense({ id, ...expenseData });
+      } else {
+        // NOTE: here TS knows that expenseId is a string, not string | undefined
+        await updateExpense(expenseId, expenseData);
+        expensesContext.updateExpense(expenseId, expenseData);
+      }
+      // setIsLoading(false); // Not need as we are closing the screen next line.
+      navigation.goBack();
+    } catch (error) {
+      console.log("🚀 ~ saveExpense ~ error:", JSON.stringify(error, null, 2));
+      const err = error as AxiosError;
+      setErrorMessage(
+        `${err.message === "Network Error" ? `${err.message}! ` : ""}Could not save expense`
+      );
+    } finally {
+      setIsLoading(false);
     }
-    navigation.goBack();
   };
+
+  const errorHandler = () => setErrorMessage(null);
+
+  if (isLoading) {
+    return <LoadingOverlay />;
+  }
+
+  if (errorMessage) {
+    return <ErrorOverlay message={errorMessage} onConfirm={errorHandler} />;
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button onPress={cancelAddOrEditExpense} mode="flat" style={styles.button}>
-          Cancel
-        </Button>
-        <Button onPress={addOrEditExpense} style={styles.button}>
-          {isNewExpense ? "Add" : "Edit"}
-        </Button>
-      </View>
+      <ExpenseForm
+        existingExpense={existingExpense}
+        submitButtonLabel={isNewExpense ? "Add" : "Edit"}
+        onCancel={cancelAddOrEditExpense}
+        saveExpense={saveExpense}
+      />
       {!isNewExpense && (
         <View style={styles.deleteContainer}>
           <IconButton
             icon="trash"
             size={36}
             color={GlobalStyles.colors.error500}
-            onPress={deleteExpense}
+            onPress={deleteExpenseHandler}
           />
         </View>
       )}

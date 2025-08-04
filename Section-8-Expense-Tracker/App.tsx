@@ -17,6 +17,7 @@ const ExpensesOverviewTabNavigator = () => {
   return (
     <BottomTab.Navigator
       // id={"ExpensesOverviewTabNavigator"}
+      initialRouteName="RecentExpenses" // This sets the initial active tab, the position of the bottom tabs is determined by the position of the BottomTab.Screen components
       screenOptions={({ route, navigation, theme }) => {
         const nav = navigation as CompositeNavigationType;
         return {
@@ -25,6 +26,7 @@ const ExpensesOverviewTabNavigator = () => {
           headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
           tabBarActiveTintColor: GlobalStyles.colors.accent500,
           tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
+          sceneStyle: { backgroundColor: GlobalStyles.colors.primary700 },
           headerRight: (props) => (
             <IconButton
               icon="add"
@@ -37,19 +39,19 @@ const ExpensesOverviewTabNavigator = () => {
       }}
     >
       <BottomTab.Screen
-        name="AllExpenses"
-        component={AllExpenses}
-        options={{
-          title: "All Expenses",
-          tabBarIcon: ({ color, size }) => <Ionicons name="hourglass" size={size} color={color} />,
-        }}
-      />
-      <BottomTab.Screen
         name="RecentExpenses"
         component={RecentExpenses}
         options={{
           title: "Recent Expenses",
           tabBarIcon: ({ color, size }) => <Ionicons name="calendar" size={size} color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="AllExpenses"
+        component={AllExpenses}
+        options={{
+          title: "All Expenses",
+          tabBarIcon: ({ color, size }) => <Ionicons name="hourglass" size={size} color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -77,7 +79,10 @@ export default function App() {
             <Stack.Screen
               name="ManageExpenseScreen"
               component={ManageExpense}
-              options={{ presentation: "modal" }}
+              options={{
+                presentation: "modal",
+                contentStyle: { backgroundColor: GlobalStyles.colors.primary800 },
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>
