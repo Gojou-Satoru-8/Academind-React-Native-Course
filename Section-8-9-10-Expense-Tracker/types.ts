@@ -3,17 +3,17 @@ import { CompositeNavigationProp } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 export type RootStackParamList = {
-  ExpensesOverviewTabs: undefined;
+  ExpensesOverviewTabsNavigator: undefined;
   ManageExpenseScreen: { expenseId: string } | undefined;
 };
 
-export type MainScreensTabParamList = {
+export type ExpensesOverviewTabsParamList = {
   AllExpenses: undefined;
   RecentExpenses: undefined;
 };
 
 export type CompositeNavigationType = CompositeNavigationProp<
-  BottomTabNavigationProp<MainScreensTabParamList>,
+  BottomTabNavigationProp<ExpensesOverviewTabsParamList>,
   NativeStackNavigationProp<RootStackParamList>
 >;
 

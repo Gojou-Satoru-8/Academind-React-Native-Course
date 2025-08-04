@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { Expense, MainScreensTabParamList } from "../../types";
+import { Expense, ExpensesOverviewTabsParamList } from "../../types";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
 // import { GlobalStyles } from "../../constants/styles";
@@ -31,7 +31,7 @@ const ExpensesOutput: React.FC<ExpensesOutputProps> = ({
   expensesPeriod,
   fallbackText,
 }) => {
-  const route = useRoute<RouteProp<MainScreensTabParamList>>();
+  const route = useRoute<RouteProp<ExpensesOverviewTabsParamList>>();
   // console.log("🚀 ~ ExpensesOutput ~ route:", route);
 
   const finalFallbackText = fallbackText

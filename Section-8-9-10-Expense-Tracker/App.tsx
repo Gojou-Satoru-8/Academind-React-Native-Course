@@ -1,7 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CompositeNavigationType, MainScreensTabParamList, RootStackParamList } from "./types";
+import {
+  CompositeNavigationType,
+  ExpensesOverviewTabsParamList,
+  RootStackParamList,
+} from "./types";
 import ManageExpense from "./screens/ManageExpense";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AllExpenses from "./screens/AllExpenses";
@@ -10,8 +14,9 @@ import { GlobalStyles } from "./constants/styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import IconButton from "./components/ui/IconButton";
 import ExpensesContextProvider from "./store/context";
+
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const BottomTab = createBottomTabNavigator<MainScreensTabParamList>();
+const BottomTab = createBottomTabNavigator<ExpensesOverviewTabsParamList>();
 
 const ExpensesOverviewTabNavigator = () => {
   return (
@@ -72,7 +77,7 @@ export default function App() {
             }}
           >
             <Stack.Screen
-              name="ExpensesOverviewTabs"
+              name="ExpensesOverviewTabsNavigator"
               component={ExpensesOverviewTabNavigator}
               options={{ headerShown: false }}
             />
@@ -90,12 +95,3 @@ export default function App() {
     </>
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center",
-//   },
-// });
