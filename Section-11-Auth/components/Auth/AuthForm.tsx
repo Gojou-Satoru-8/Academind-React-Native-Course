@@ -6,7 +6,7 @@ import Input from "./Input";
 import { Credentials } from "../../types";
 
 interface AuthFormProps {
-  isLogin: boolean;
+  isLogin?: boolean;
   onSubmit: (credentials: Credentials) => void;
   credentialsInvalid: {
     [key in keyof Credentials]: boolean;

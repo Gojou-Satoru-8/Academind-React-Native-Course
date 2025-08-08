@@ -1,11 +1,11 @@
-import { Pressable, StyleSheet } from "react-native";
+import { GestureResponderEvent, Pressable, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 interface IconButtonProps {
-  icon: keyof typeof Ionicons.glyphMap;
-  color: string;
-  size: number;
-  onPress: () => void;
+  icon?: keyof typeof Ionicons.glyphMap;
+  color?: string;
+  size?: number;
+  onPress?: (event: GestureResponderEvent) => void;
 }
 
 function IconButton({ icon, color, size, onPress }: IconButtonProps) {
@@ -22,11 +22,6 @@ function IconButton({ icon, color, size, onPress }: IconButtonProps) {
 export default IconButton;
 
 const styles = StyleSheet.create({
-  button: {
-    margin: 8,
-    borderRadius: 20,
-  },
-  pressed: {
-    opacity: 0.7,
-  },
+  button: { margin: 8, borderRadius: 20 },
+  pressed: { opacity: 0.7 },
 });

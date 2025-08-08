@@ -4,13 +4,18 @@ import { Alert, StyleSheet, View } from "react-native";
 import FlatButton from "../ui/FlatButton";
 import AuthForm from "./AuthForm";
 import { Colors } from "../../constants/styles";
-import { Credentials } from "../../types";
+import { AuthCredentials, Credentials, RootStackParamList } from "../../types";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 interface AuthContentProps {
-  isLogin: boolean;
-  onAuthenticate: (credentials: Pick<Credentials, "email" | "password">) => void;
+  isLogin?: boolean;
+  onAuthenticate: (credentials: AuthCredentials) => void;
 }
+
 const AuthContent: React.FC<AuthContentProps> = function ({ isLogin, onAuthenticate }) {
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  // const route = useRoute<RouteProp<RootStackParamList>>();
   const [credentialsInvalid, setCredentialsInvalid] = useState({
     email: false,
     password: false,
@@ -20,6 +25,10 @@ const AuthContent: React.FC<AuthContentProps> = function ({ isLogin, onAuthentic
 
   function switchAuthModeHandler() {
     // Todo
+    // if (route.name === "Login") navigation.replace("Signup");
+    // else navigation.replace("Login");
+    if (isLogin) navigation.replace("Signup");
+    else navigation.replace("Login");
   }
 
   function submitHandler(credentials: Credentials) {
@@ -28,8 +37,8 @@ const AuthContent: React.FC<AuthContentProps> = function ({ isLogin, onAuthentic
     email = email.trim();
     password = password.trim();
 
-    const emailIsValid = email.includes("@");
-    const passwordIsValid = password.length > 6;
+    const emailIsValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email);
+    const passwordIsValid = password.length > 6 && /^[a-zA-Z0-9.@!_%+-]+$/.test(password);
     const emailsAreEqual = email === confirmEmail;
     const passwordsAreEqual = password === confirmPassword;
 
@@ -53,6 +62,7 @@ const AuthContent: React.FC<AuthContentProps> = function ({ isLogin, onAuthentic
   return (
     <View style={styles.authContent}>
       <AuthForm
+        // {...(isLogin && { isLogin })}
         isLogin={isLogin}
         onSubmit={submitHandler}
         credentialsInvalid={credentialsInvalid}
