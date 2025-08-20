@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Section-12-Favourite-Places",
+    "slug": "Section-12-Favourite-Places",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "scheme": "section12favouriteplaces",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.section12favouriteplaces",
+      "config": {
+        "googleMapsApiKey": "AIzaSyDq7jeVZ60myNMoHBeSCuMpoXSkBQUyDkQ"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.section12favouriteplaces",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDq7jeVZ60myNMoHBeSCuMpoXSkBQUyDkQ"
+        }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-asset",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/splash-icon.png"
+        }
+      ],
+      "react-native-edge-to-edge",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "The app needs access to your camera to take photos of your favourite places."
+        }
+      ],
+      "expo-sqlite"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b4ced011-b79e-4289-bbc8-d65d5afae0c1"
+      }
+    }
+  }
+}
