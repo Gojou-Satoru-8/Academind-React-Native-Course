@@ -4,7 +4,7 @@ import { createURL } from "expo-linking";
 import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import * as React from "react";
-import { useColorScheme, View } from "react-native";
+import { useColorScheme } from "react-native";
 import Navigation from "./navigation";
 import { Ionicons } from "@expo/vector-icons";
 import { useState, useEffect } from "react";

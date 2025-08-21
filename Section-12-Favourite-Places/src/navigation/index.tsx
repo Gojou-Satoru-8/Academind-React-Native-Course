@@ -3,7 +3,7 @@ import AllPlaces from "./screens/AllPlaces";
 import PlaceDetails from "./screens/PlaceDetails";
 import AddPlace from "./screens/AddPlace";
 import Map from "./screens/Map";
-import { createStaticNavigation, StaticParamList } from "@react-navigation/native";
+import { createStaticNavigation } from "@react-navigation/native";
 // import { RootStackParamList } from "../../types";
 import IconButton from "../components/UI/IconButton";
 import { Colors } from "../constants/colors";
