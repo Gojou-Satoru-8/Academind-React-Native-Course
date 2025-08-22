@@ -14,7 +14,7 @@ let sessionExtensionTimeout: NodeJS.Timeout | null = null;
 const useAuthCheck = () => {
   const authContext = useAuthContext();
   console.log("Auth check hook ran | authContext: ", authContext);
-  const { authenticate, logout } = authContext;
+  const { isAuthenticated, authenticate, logout } = authContext;
 
   const [isAppReady, setIsAppReady] = useState(false);
   const lastInteractionDateTimeRef = useRef<number>(Date.now());
@@ -89,7 +89,7 @@ const useAuthCheck = () => {
       const storedToken = await AsyncStorage.getItem(AsyncStorageKeys.TOKEN);
       const expiryDateTime = await AsyncStorage.getItem(AsyncStorageKeys.EXPIRY_DATETIME);
       const refreshToken = await AsyncStorage.getItem(AsyncStorageKeys.REFRESH_TOKEN);
-
+      if (isAuthenticated) return;
       if (storedToken && expiryDateTime && refreshToken) {
         // Means user was logged in, but session may be stale
         if (Date.now() >= +expiryDateTime) {
@@ -110,7 +110,7 @@ const useAuthCheck = () => {
     // Below is the reason authContext had to be destructured, as authContext is an object without
     // stable identity. So either use ref with auth context, or use the individual functions, as
     // these are wrapped within useCallback.
-  }, [authenticate, logout]);
+  }, [authenticate, isAuthenticated, logout]);
 
   return {
     isAppReady,
