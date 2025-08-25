@@ -13,6 +13,9 @@
       "bundleIdentifier": "com.section12favouriteplaces",
       "config": {
         "googleMapsApiKey": "AIzaSyDq7jeVZ60myNMoHBeSCuMpoXSkBQUyDkQ"
+      },
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
